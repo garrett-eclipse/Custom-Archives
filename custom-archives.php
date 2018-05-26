@@ -640,8 +640,6 @@ class Custom_Archives {
 
 		}
 
-		var_dump($wp_query);die();
-
 		return $template;
 
 	}
