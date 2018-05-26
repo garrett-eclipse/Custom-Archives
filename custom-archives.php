@@ -283,10 +283,10 @@ class Custom_Archives {
 		?>
 			<div class="wrap">
 				<h1 class="page-title"><?php esc_html_e( 'Custom Archives', 'custom-archives' ); ?></h1>
-				<p><?php esc_html_e( 'Select a page below to act as a custom archive for a specific post type.', 'custom-archives' ); ?></p>
 				<?php if ( empty( $types ) ) : ?>
-					<p><strong style="color: #aa0000;"><?php esc_html_e( 'You don&#39;t have any custom post types, you must create one first.', 'custom-archives' ); ?></strong></p>
+					<p><strong style="color: #dc3232;"><?php esc_html_e( 'You don&#39;t have any custom post types, you must create one first.', 'custom-archives' ); ?></strong></p>
 				<?php else : ?>
+					<p><?php esc_html_e( 'Select a page below to act as a custom archive for a specific post type.', 'custom-archives' ); ?></p>
 					<div id="settings" class="tab-content">
 						<form method="post" action="options.php">
 							<table class="plugin-form form-table">
