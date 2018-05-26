@@ -429,6 +429,16 @@ class Custom_Archives {
 
 			if ( false !== $url ) {
 
+				/**
+				 * Fires before redirecting to the custom archive.
+				 * 
+				 * @since 1.0
+				 * 
+				 * @param object $post The custom archive page object.
+				 * @param string $url  The URL to redirect to.
+				 */
+				do_action( 'before_custom_archive_redirect', $post, $url );
+
 				// Set a header response
 				status_header( 301 );
 
@@ -616,8 +626,7 @@ class Custom_Archives {
 				// Update the $wp_query data
 				$wp_query->post = $post;
 				$wp_query->query_vars['archive_posts'] = $wp_query->posts;
-				$wp_query->posts = array();
-				$wp_query->posts[] = $post;
+				$wp_query->posts = array( $post );
 				$wp_query->query_vars['p'] = $post_id;
 				$wp_query->query_vars['page_id'] = $post_id;
 
