@@ -369,14 +369,23 @@ class Custom_Archives {
 	 */
 	public static function print_setting( $args ) {
 
-		wp_dropdown_pages(
+		// Get the home and blog pages from Settings > Reading
+		$home_page = get_option( 'page_on_front', false );
+		$blog_page = get_option( 'page_for_posts', false );
+
+		$pages = wp_dropdown_pages(
 			array(
 				'id' => esc_attr( 'select_' . $args['name'] ),
 				'name' => esc_attr( $args['name'] ),
 				'selected' => $args['value'],
-				'show_option_none' => esc_html__( 'Default', 'custom-archives' )
+				'exclude' => implode( ',', array( $home_page, $blog_page ) ),
+				'show_option_none' => esc_html__( 'Default', 'custom-archives' ),
+				'echo' => false
 			)
 		);
+
+		// Print the drop down select or error
+		echo ( $pages ) ? $pages : '<p>' . esc_html__( 'No pages to select.', 'custom-archives' ) . '</p>';
 
 	}
 
