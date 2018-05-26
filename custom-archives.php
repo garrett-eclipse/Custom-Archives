@@ -63,6 +63,7 @@ class Custom_Archives {
 
 		add_filter( 'plugin_action_links', array( __CLASS__, 'add_donate_link' ), 10, 2 );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_post_states' ), 20, 2 );
+		add_filter( 'document_title_parts', array( __CLASS__, 'rewrite_page_title' ), 15, 1 );
 		add_filter( 'template_include', array( __CLASS__, 'archive_template' ), 15, 1 );
 		add_filter( 'get_sample_permalink_html', array( __CLASS__, 'rewrite_edit_permalink' ), 15, 5 );
 
@@ -588,6 +589,46 @@ class Custom_Archives {
 	}
 
 	/**
+	 * Filter the custom archive page title.
+	 * 
+	 * @since 1.0
+	 * 
+	 * @param array $title An array of title parts.
+	 * 
+	 * @return string $title
+	 */
+	public static function rewrite_page_title( $title ) {
+
+		global $wp_query;
+
+		if ( $wp_query->is_archive ) {
+
+			// Get the archive ids
+			$ids = self::get_archive_ids();
+
+			// Get the archive post type
+			$post_type = $wp_query->query['post_type'];
+
+			// Get the page id for the archive page
+			$post_id = ( isset( $ids[ $post_type ] ) ) ? $ids[ $post_type ] : 0;
+
+			if ( 0 !== $post_id ) {
+
+				// Get the post object
+				$post = get_post( $post_id );
+
+				// Set the page title
+				$title['title'] = $post->post_title;
+
+			}
+
+		}
+
+		return $title;
+
+	}
+
+	/**
 	 * Include the template for the selected
 	 * page for this custom archive.
 	 * 
@@ -609,11 +650,11 @@ class Custom_Archives {
 
 		if ( $wp_query->is_archive ) {
 
-			// Get the archive post type
-			$post_type = $wp_query->query['post_type'];
-
 			// Get the archive ids
 			$ids = self::get_archive_ids();
+
+			// Get the archive post type
+			$post_type = $wp_query->query['post_type'];
 
 			// Get the page id for the archive page
 			$post_id = ( isset( $ids[ $post_type ] ) ) ? $ids[ $post_type ] : 0;
