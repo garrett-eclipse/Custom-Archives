@@ -498,9 +498,6 @@ class Custom_Archives {
 	 * Adds an edit page link to the toolbar when viewing
 	 * an archive page that is using a custom archive.
 	 * 
-	 * The code in this function comes from the functions
-	 * listed in wp-includes/admin-bar.php.
-	 * 
 	 * @since 1.0
 	 * 
 	 * @param object $wp_admin_bar The toolbar links.
