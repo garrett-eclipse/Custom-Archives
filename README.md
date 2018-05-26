@@ -4,7 +4,7 @@
 
 ## Thank You
 
-Thanks Human Made who released [Page for post type](https://github.com/humanmade/page-for-post-type/) which was used as inspiration for building this plugin.
+Thanks go to Human Made who released [Page for post type](https://github.com/humanmade/page-for-post-type/) which was used as inspiration for building this plugin.
 
 ## Donate
 

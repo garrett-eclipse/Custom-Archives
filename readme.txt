@@ -18,9 +18,9 @@ Custom Archives lets you set the page of your choice as the archive page to any 
 
 There are lots of action and filter hooks available to extend the functionality of this plugin. If you'd like more information on how to use them, take a look at the plugin Wiki on the [GitHub repository](https://github.com/danieltj27/Custom-Archives/wiki).
 
-= Special Thanks =
+= Thank You =
 
-Thank you to the team at Human Made which released [Page for post type](https://github.com/humanmade/page-for-post-type/) which was used as inspiration for building this plugin.
+Thanks go to Human Made who released [Page for post type](https://github.com/humanmade/page-for-post-type/) which was used as inspiration for building this plugin.
 
 == Installation ==
 
