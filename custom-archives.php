@@ -56,13 +56,14 @@ class Custom_Archives {
 		add_action( 'plugins_loaded', array( __CLASS__, 'load_text_domain' ), 10, 0 );
 		add_action( 'admin_menu', array( __CLASS__, 'add_admin_page' ), 10, 0 );
 		add_action( 'admin_init', array( __CLASS__, 'add_settings' ), 10, 0 );
-		add_action( 'template_redirect', array( __CLASS__, 'archive_redirect' ), 10, 0 );
-		add_action( 'transition_post_status', array( __CLASS__, 'post_status_updated' ), 10, 3 );
-		add_action( 'deleted_post', array( __CLASS__, 'post_deleted' ), 10, 1 );
+		add_action( 'template_redirect', array( __CLASS__, 'archive_redirect' ), 15, 0 );
+		add_action( 'transition_post_status', array( __CLASS__, 'post_status_updated' ), 20, 3 );
+		add_action( 'deleted_post', array( __CLASS__, 'post_deleted' ), 20, 1 );
+		add_action( 'admin_bar_menu', array( __CLASS__, 'add_edit_link' ), 80, 1 );
 
 		add_filter( 'plugin_action_links', array( __CLASS__, 'add_donate_link' ), 10, 2 );
-		add_filter( 'display_post_states', array( __CLASS__, 'add_post_states' ), 10, 2 );
-		add_filter( 'template_include', array( __CLASS__, 'archive_template' ), 10, 1 );
+		add_filter( 'display_post_states', array( __CLASS__, 'add_post_states' ), 20, 2 );
+		add_filter( 'template_include', array( __CLASS__, 'archive_template' ), 15, 1 );
 		add_filter( 'get_sample_permalink_html', array( __CLASS__, 'rewrite_edit_permalink' ), 15, 5 );
 
 	}
@@ -492,6 +493,51 @@ class Custom_Archives {
 	}
 
 	/**
+	 * Add an edit link to the Toolbar.
+	 * 
+	 * Adds an edit page link to the toolbar when viewing
+	 * an archive page that is using a custom archive.
+	 * 
+	 * The code in this function comes from the functions
+	 * listed in wp-includes/admin-bar.php.
+	 * 
+	 * @since 1.0
+	 * 
+	 * @param object $wp_admin_bar The toolbar links.
+	 * 
+	 * @return void
+	 */
+	public static function add_edit_link( $wp_admin_bar ) {
+
+		global $wp_query, $wp_the_query, $post;
+
+		if ( ! is_admin() && true === $wp_query->is_archive && in_array( $post->ID, self::get_archive_ids() ) ) {
+
+			// Get the post object
+			$post_type_object = get_post_type_object( $post->post_type );
+
+			// Get the edit link
+			$edit_post_link = get_edit_post_link( $post->ID );
+
+			// Can we add an edit link for this user
+			if ( current_user_can( 'edit_post', $post->ID ) ) {
+
+				// Add the menu item
+				$wp_admin_bar->add_menu(
+					array(
+						'id' => 'edit',
+						'title' => $post_type_object->labels->edit_item,
+						'href' => $edit_post_link
+					)
+				);
+
+			}
+
+		}
+
+	}
+
+	/**
 	 * Add post states to custom archives.
 	 * 
 	 * @since 1.0
@@ -561,9 +607,13 @@ class Custom_Archives {
 				// Get the post object
 				$post = get_post( $post_id );
 
-				// Update the query
+				// Update the $wp_query data
 				$wp_query->post = $post;
-				$wp_query->posts[0] = $post;
+				$wp_query->query_vars['archive_posts'] = $wp_query->posts;
+				$wp_query->posts = array();
+				$wp_query->posts[] = $post;
+				$wp_query->query_vars['p'] = $post_id;
+				$wp_query->query_vars['page_id'] = $post_id;
 
 				// Get the template directory
 				$directory = get_template_directory();
@@ -589,6 +639,8 @@ class Custom_Archives {
 			}
 
 		}
+
+		var_dump($wp_query);die();
 
 		return $template;
 
