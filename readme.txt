@@ -3,7 +3,7 @@ Contributors: danieltj
 Tags: page, post types, archive, template, themes
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.0
+Stable tag: 1.1
 License: GNU GPL v3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Donate link: https://www.paypal.me/dtj27
@@ -38,7 +38,7 @@ By default WordPress allows you to use a special page as a custom archive page f
 
 = Why am I not seeing any options? =
 
-You must have at least one custom post type regsitered on your site for this plugin to have any affect. If you don't, you cannot use this.
+You must have at least one custom post type registered on your site for this plugin to have any affect. If you don't, you cannot use this.
 
 = What happens if I delete the page? =
 

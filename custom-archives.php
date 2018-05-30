@@ -7,7 +7,7 @@
  * Author: Daniel James
  * Author URI: https://www.danieltj.co.uk/
  * Text Domain: custom-archives
- * Version: 1.0
+ * Version: 1.1
  */
 
 /**
@@ -42,7 +42,7 @@ class Custom_Archives {
 	 * 
 	 * @var string
 	 */
-	protected static $version = '1.0';
+	protected static $version = '1.1';
 
 	/**
 	 * Puts the archive into WordPress.
@@ -639,6 +639,7 @@ class Custom_Archives {
 	 * until a suitable one is found.
 	 * 
 	 * @since 1.0
+	 * @since 1.1 Better checks for templates and improvements to $wp_query.
 	 * 
 	 * @param string $template The template name.
 	 * 
@@ -665,6 +666,7 @@ class Custom_Archives {
 				$post = get_post( $post_id );
 
 				// Update the $wp_query data
+				$wp_query->is_page = true;
 				$wp_query->post = $post;
 				$wp_query->query_vars['archive_posts'] = $wp_query->posts;
 				$wp_query->posts = array( $post );
@@ -677,12 +679,14 @@ class Custom_Archives {
 				// Get the page template slug
 				$template = get_post_meta( $post->ID, '_wp_page_template', true );
 
-				if ( 'default' == $template ) {
+				// When no template name given
+				if ( '' == $template || false === $template || 'default' == $template ) {
 
 					$template = 'page.php';
 
 				}
 
+				// Fallback if page.php doesn't exist either
 				if ( ! file_exists( $directory . '/' . $template ) ) {
 
 					$template = 'index.php';
