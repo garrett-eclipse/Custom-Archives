@@ -64,7 +64,7 @@ class Custom_Archives {
 		add_filter( 'plugin_action_links', array( __CLASS__, 'add_donate_link' ), 10, 2 );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_post_states' ), 20, 2 );
 		add_filter( 'document_title_parts', array( __CLASS__, 'rewrite_page_title' ), 15, 1 );
-		add_filter( 'template_include', array( __CLASS__, 'archive_template' ), 15, 1 );
+		add_filter( 'template_include', array( __CLASS__, 'archive_template' ), 20, 1 );
 		add_filter( 'get_sample_permalink_html', array( __CLASS__, 'rewrite_edit_permalink' ), 15, 5 );
 
 	}
@@ -692,6 +692,17 @@ class Custom_Archives {
 					$template = 'index.php';
 
 				}
+
+				/**
+				 * Filter the page template for this custom archive.
+				 * 
+				 * @since 1.1
+				 * 
+				 * @param string $template  The selected page template.
+				 * @param int    $post_id   The pages post id.
+				 * @param string $post_type The post type for the archive page.
+				 */
+				$template = apply_filters( 'pre_custom_archive_template', $template, $post_id, $post_type );
 
 				// Create the full template path
 				$template = $directory . '/' . $template;
